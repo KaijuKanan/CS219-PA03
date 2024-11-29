@@ -16,6 +16,7 @@ void SUBS(string, string, string, string, string[], int[]);
 void ANDS(string, string, string, string, string[], int[]);
 void ORR(string, string, string, string, string[], int[]);
 void XOR(string, string, string, string, string[], int[]);
+void LSRS(string, string, string, string, string[], int[]);
 
 int main(){
     //initialize register array
@@ -88,7 +89,7 @@ void ADDS(string operation, string result, string operand1, string operand2, str
     //output results
     cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
@@ -120,7 +121,7 @@ void SUBS(string operation, string result, string operand1, string operand2, str
     //output results
     cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
@@ -150,7 +151,7 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     //output results
     cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
@@ -180,7 +181,7 @@ void ORR(string operation, string result, string operand1, string operand2, stri
     //output results
     cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags    
@@ -210,7 +211,32 @@ void XOR(string operation, string result, string operand1, string operand2, stri
     //output results
     cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
+    }
+    cout << endl;
+    //update flag values and output flags
+}
+
+void LSRS(string operation, string result, string operand, string shift, string registerArray[8], int flagArray[4]){
+    //get register location of result
+    string r = result.erase(0,1);
+    //convert the register location to an integer
+    int resultsPosition = stoi(r);
+    //get register location of operand1
+    string op = operand.erase(0,1);
+    //convert the register location to an integer
+    int operandPosition = stoi(op);
+    //get shift value
+    string s = shift.erase(0,1);
+    int shiftValue = stoi(s); 
+
+    //perform operation
+    uint32_t resultValue = convertToBinary(registerArray[operandPosition]) >> shiftValue;
+    registerArray[resultsPosition] = "0x" + to_string(resultValue);
+
+    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    for(int i = 0; i < 8; i++){
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags

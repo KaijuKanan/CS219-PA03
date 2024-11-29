@@ -80,5 +80,16 @@ void ADDS(string operation, string result, string operand1, string operand2, str
     //perform ADDS operation
     uint32_t resultValue = convertToBinary(registerArray[operand1Position]) + convertToBinary(registerArray[operand2Position]);
 
+    //update register array
+    string resultHex = "0x" + to_string(resultValue);
+    registerArray[resultsPosition] = resultHex;
+
+    //output results
+    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    for(int i = 0; i < 8; i++){
+        cout << "R" << i << " " << registerArray[i] << " ";
+    }
+    cout << endl;
+    //output flags
 
 }

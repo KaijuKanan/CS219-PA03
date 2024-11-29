@@ -28,6 +28,12 @@ uint32_t convertToBinary(string operand){
 
 
 void MOV(string operation, string registerLocation, string hexValue){
+    //creaete array to represent flags
+    string flagArray[4];
+    //initialize flags to 0 because MOV operation doesnt affect any flags
+    for(int i = 0; i < 4; i++){
+        flagArray[i] = "0";
+    }
     //create array to represent registers
     string registerArray[8];
     //remove the R part of the register location
@@ -43,4 +49,12 @@ void MOV(string operation, string registerLocation, string hexValue){
             registerArray[i] = "0x0";
         }
     }
+    //output results
+    cout << operation << " " << registerLocation << " " << hexValue << endl;
+    for(int i = 0; i < 8; i++){
+        cout << "R" << i << " " << registerArray[i] << " ";
+    }
+    cout << endl;
+    //output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }

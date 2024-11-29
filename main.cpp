@@ -155,7 +155,7 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     //update flag values and output flags
 }
 
-void ANDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void ORR(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer

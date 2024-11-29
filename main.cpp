@@ -14,6 +14,7 @@ void MOV(string, string, string, string[], int[]);
 void ADDS(string, string, string, string, string[], int[]);
 void SUBS(string, string, string, string, string[], int[]);
 void ANDS(string, string, string, string, string[], int[]);
+void ORR(string, string, string, string, string[], int[]);
 
 int main(){
     //initialize register array
@@ -152,4 +153,34 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     }
     cout << endl;
     //update flag values and output flags
+}
+
+void ANDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    //get register location of result
+    string r = result.erase(0,1);
+    //convert the register location to an integer
+    int resultsPosition = stoi(r); 
+    //get register location of operand1
+    string op1 = operand1.erase(0,1);
+    //convert the register location to an integer
+    int operand1Position = stoi(op1);
+    //get register location of operand2
+    string op2 = operand2.erase(0,1);
+    //convert the register location to an integer
+    int operand2Position = stoi(op2);
+
+    //perform operation
+    uint32_t resultValue = convertToBinary(registerArray[operand1Position]) | convertToBinary(registerArray[operand2Position]);
+
+    //update register array
+    string resultHex = "0x" + to_string(resultValue);
+    registerArray[resultsPosition] = resultHex;
+
+    //output results
+    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    for(int i = 0; i < 8; i++){
+        cout << "R" << i << " " << registerArray[i] << " ";
+    }
+    cout << endl;
+    //update flag values and output flags    
 }

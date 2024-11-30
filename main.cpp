@@ -163,7 +163,32 @@ void ADDS(string operation, string result, string operand1, string operand2, str
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
+
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
+
+    if(resultValue < convertToBinary(registerArray[operand1Position])){
+        flagArray[2] = 1;
+    }
+    else{
+        flagArray[2] = 0;
+    }
+
+    if(convertToBinary(registerArray[operand1Position]) > 0 && convertToBinary(registerArray[operand2Position]) > 0 && resultValue < 0){
+        flagArray[3] = 1;
+    }
+    else if(convertToBinary(registerArray[operand1Position]) < 0 && convertToBinary(registerArray[operand2Position]) < 0 && resultValue > 0){
+        flagArray[3] = 1;
+    }
+    else{
+        flagArray[3] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
@@ -204,6 +229,30 @@ void SUBS(string operation, string result, string operand1, string operand2, str
     }
     cout << endl;
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
+
+    if(resultValue < convertToBinary(registerArray[operand1Position])){
+        flagArray[2] = 1;
+    }
+    else{
+        flagArray[2] = 0;
+    }
+
+    if(convertToBinary(registerArray[operand1Position]) > 0 && convertToBinary(registerArray[operand2Position]) > 0 && resultValue < 0){
+        flagArray[3] = 1;
+    }
+    else if(convertToBinary(registerArray[operand1Position]) < 0 && convertToBinary(registerArray[operand2Position]) < 0 && resultValue > 0){
+        flagArray[3] = 1;
+    }
+    else{
+        flagArray[3] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
@@ -244,6 +293,13 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     }
     cout << endl;
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
@@ -284,6 +340,13 @@ void ORR(string operation, string result, string operand1, string operand2, stri
     }
     cout << endl;
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;   
 }
 
@@ -324,6 +387,14 @@ void XOR(string operation, string result, string operand1, string operand2, stri
     }
     cout << endl;
     //update flag values and output flags
+    string binaryValue = to_string(resultValue);
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
@@ -359,6 +430,20 @@ void LSRS(string operation, string result, string operand, string shift, string*
     }
     cout << endl;
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
+
+    if(resultValue < convertToBinary(registerArray[operandPosition])){
+        flagArray[2] = 1;
+    }
+    else{
+        flagArray[2] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
@@ -395,5 +480,19 @@ void LSLS(string operation, string result, string operand, string shift, string*
     }
     cout << endl;
     //update flag values and output flags
+    flagArray[0] = (resultValue >> 31) & 1;
+    if(resultValue == 0){
+        flagArray[1] = 1;
+    }
+    else{
+        flagArray[1] = 0;
+    }
+
+    if(resultValue < convertToBinary(registerArray[operandPosition])){
+        flagArray[2] = 1;
+    }
+    else{
+        flagArray[2] = 0;
+    }
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }

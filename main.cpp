@@ -20,10 +20,11 @@ void LSRS(string, string, string, string, string[], int[]);
 void LSLS(string, string, string, string, string[], int[]);
 
 int main(){
-    string operand;
+    string operation;
     string resultRegister;
     string operandRegister1;
     string operandRegister2;
+    string hexValue;
     string shiftVal;
 
     //initialize register array
@@ -43,7 +44,8 @@ int main(){
 
     while(input >> operation){
         if(operation == "MOV" || operation == "mov"){
-
+            input >> resultRegister >> hexValue;
+            MOV(operation, resultRegister, hexValue, registerArray, flagArray);
         }
         if(operation == "ADDS" || operation == "adds"){
 
@@ -67,10 +69,10 @@ int main(){
 
         }
         if(operation == "CMP" || operation == "cmp"){
-
+            cout << "Extra Credit" << endl;
         }
         if(operation == "TST" || operation == "tst"){
-
+            out << "Extra Credit" << endl;
         }
     }
     input.close();
@@ -89,6 +91,9 @@ uint32_t convertToBinary(string operand){
 
 
 void MOV(string operation, string registerLocation, string hexValue, string registerArray[8], int flagArray[4]){
+    //remove the comma from the register location
+    string temp = registerLocation;
+    registerLocation.pop_back();
     //remove the R part of the register location
     string rl = registerLocation.erase(0,1);
     //convert the register location to an integer
@@ -103,7 +108,7 @@ void MOV(string operation, string registerLocation, string hexValue, string regi
         }
     }
     //output results
-    cout << operation << " " << registerLocation << " " << hexValue << endl;
+    cout << operation << " " << temp << " " << hexValue << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << " " << registerArray[i] << " ";
     }
@@ -281,7 +286,7 @@ void LSRS(string operation, string result, string operand, string shift, string 
     uint32_t resultValue = convertToBinary(registerArray[operandPosition]) >> shiftValue;
     registerArray[resultsPosition] = "0x" + to_string(resultValue);
 
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << result << ", " << operand << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
@@ -306,7 +311,7 @@ void LSLS(string operation, string result, string operand, string shift, string 
     uint32_t resultValue = convertToBinary(registerArray[operandPosition]) << shiftValue;
     registerArray[resultsPosition] = "0x" + to_string(resultValue);
 
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << result << ", " << operand << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }

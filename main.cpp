@@ -29,6 +29,9 @@ int main(){
 
     //initialize register array
     string registerArray[8];
+    for(int i = 0; i < 8; i++){
+        registerArray[i] = "0x0";
+    }
     //initialize flag array
     int flagArray[4];
     //set all flags to 0

@@ -20,6 +20,12 @@ void LSRS(string, string, string, string, string[], int[]);
 void LSLS(string, string, string, string, string[], int[]);
 
 int main(){
+    string operand;
+    string resultRegister;
+    string operandRegister1;
+    string operandRegister2;
+    string shiftVal;
+
     //initialize register array
     string registerArray[8];
     //initialize flag array
@@ -28,6 +34,46 @@ int main(){
     for(int i = 0; i < 4; i++){
         flagArray[i] = 0;
     }
+
+    ifstream input("Programming-Project-3.txt");
+    if(!input.is_open()){
+        cout << "File Cannot Be Opened! (╯°□°）╯" << endl;
+        return 1;
+    }
+
+    while(input >> operation){
+        if(operation == "MOV" || operation == "mov"){
+
+        }
+        if(operation == "ADDS" || operation == "adds"){
+
+        }
+        if(operation == "SUBS" || operation == "subs"){
+
+        }
+        if(operation == "ANDS" || operation == "ands"){
+
+        }
+        if(operation == "ORRS" || operation == "ors"){
+
+        }
+        if(operation == "XORS" || operation == "xors"){
+
+        }
+        if(operation == "LSRS" || operation == "lsrs"){
+
+        }
+        if(operation == "LSLS" || operation == "lsls"){
+
+        }
+        if(operation == "CMP" || operation == "cmp"){
+
+        }
+        if(operation == "TST" || operation == "tst"){
+
+        }
+    }
+    input.close();
 
     return 0;
 }

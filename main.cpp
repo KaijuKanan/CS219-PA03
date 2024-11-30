@@ -46,33 +46,48 @@ int main(){
         if(operation == "MOV" || operation == "mov"){
             input >> resultRegister >> hexValue;
             MOV(operation, resultRegister, hexValue, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "ADDS" || operation == "adds"){
-
+            input >> resultRegister >> operandRegister1 >> operandRegister2;
+            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "SUBS" || operation == "subs"){
-
+            input >> resultRegister >> operandRegister1 >> operandRegister2;
+            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "ANDS" || operation == "ands"){
-
+            input >> resultRegister >> operandRegister1 >> operandRegister2;
+            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "ORRS" || operation == "ors"){
-
+            input >> resultRegister >> operandRegister1 >> operandRegister2;
+            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "XORS" || operation == "xors"){
-
+            input >> resultRegister >> operandRegister1 >> operandRegister2;
+            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "LSRS" || operation == "lsrs"){
-
+            input >> resultRegister >> operandRegister1 >> shiftVal;
+            LSRS(operation, resultRegister, operandRegister1, shiftVal, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "LSLS" || operation == "lsls"){
-
+            input >> resultRegister >> operandRegister1 >> shiftVal;
+            LSLS(operation, resultRegister, operandRegister1, shiftVal, registerArray, flagArray);
+            cout << endl;
         }
         if(operation == "CMP" || operation == "cmp"){
             cout << "Extra Credit" << endl;
         }
         if(operation == "TST" || operation == "tst"){
-            out << "Extra Credit" << endl;
+            cout << "Extra Credit" << endl;
         }
     }
     input.close();
@@ -118,14 +133,22 @@ void MOV(string operation, string registerLocation, string hexValue, string regi
 }
 
 void ADDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r); 
+    int resultsPosition = stoi(r);
+
+    string temp2 = operand1;
+    operand1.pop_back();
     //get register location of operand1
     string op1 = operand1.erase(0,1);
     //convert the register location to an integer
     int operand1Position = stoi(op1);
+
+    string temp3 = operand2;
+    operand2.pop_back();
     //get register location of operand2
     string op2 = operand2.erase(0,1);
     //convert the register location to an integer
@@ -139,23 +162,32 @@ void ADDS(string operation, string result, string operand1, string operand2, str
     registerArray[resultsPosition] = resultHex;
 
     //output results
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << temp1 << " " << temp2 << " " << temp3 << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
 void SUBS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r); 
+    int resultsPosition = stoi(r);
+
+    string temp2 = operand1;
+    operand1.pop_back();
     //get register location of operand1
     string op1 = operand1.erase(0,1);
     //convert the register location to an integer
     int operand1Position = stoi(op1);
+
+    string temp3 = operand2;
+    operand2.pop_back();
     //get register location of operand2
     string op2 = operand2.erase(0,1);
     //convert the register location to an integer
@@ -171,23 +203,32 @@ void SUBS(string operation, string result, string operand1, string operand2, str
     registerArray[resultsPosition] = resultHex;
 
     //output results
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << temp1 << " " << temp2 << " " << temp3 << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
 void ANDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r); 
+    int resultsPosition = stoi(r);
+
+    string temp2 = operand1;
+    operand1.pop_back();
     //get register location of operand1
     string op1 = operand1.erase(0,1);
     //convert the register location to an integer
     int operand1Position = stoi(op1);
+
+    string temp3 = operand2;
+    operand2.pop_back();
     //get register location of operand2
     string op2 = operand2.erase(0,1);
     //convert the register location to an integer
@@ -201,23 +242,32 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     registerArray[resultsPosition] = resultHex;
 
     //output results
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << temp1 << " " << temp2 << " " << temp3 << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
 void ORR(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r); 
+    int resultsPosition = stoi(r);
+
+    string temp2 = operand1;
+    operand1.pop_back();
     //get register location of operand1
     string op1 = operand1.erase(0,1);
     //convert the register location to an integer
     int operand1Position = stoi(op1);
+
+    string temp3 = operand2;
+    operand2.pop_back();
     //get register location of operand2
     string op2 = operand2.erase(0,1);
     //convert the register location to an integer
@@ -231,23 +281,32 @@ void ORR(string operation, string result, string operand1, string operand2, stri
     registerArray[resultsPosition] = resultHex;
 
     //output results
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << temp1 << " " << temp2 << " " << temp3 << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
-    //update flag values and output flags    
+    //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;   
 }
 
 void XOR(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r); 
+    int resultsPosition = stoi(r);
+
+    string temp2 = operand1;
+    operand1.pop_back();
     //get register location of operand1
     string op1 = operand1.erase(0,1);
     //convert the register location to an integer
     int operand1Position = stoi(op1);
+
+    string temp3 = operand2;
+    operand2.pop_back();
     //get register location of operand2
     string op2 = operand2.erase(0,1);
     //convert the register location to an integer
@@ -261,23 +320,30 @@ void XOR(string operation, string result, string operand1, string operand2, stri
     registerArray[resultsPosition] = resultHex;
 
     //output results
-    cout << operation << " " << result << " " << operand1 << " " << operand2 << endl;
+    cout << operation << " " << temp1 << " " << temp2 << " " << temp3 << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
 void LSRS(string operation, string result, string operand, string shift, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
     int resultsPosition = stoi(r);
+
+    string temp2 = operand;
+    operand.pop_back();
     //get register location of operand1
-    string op = operand.erase(0,1);
+    string op1 = operand.erase(0,1);
     //convert the register location to an integer
-    int operandPosition = stoi(op);
+    int operandPosition = stoi(op1);
+
     //get shift value
     string s = shift.erase(0,1);
     int shiftValue = stoi(s); 
@@ -286,35 +352,44 @@ void LSRS(string operation, string result, string operand, string shift, string 
     uint32_t resultValue = convertToBinary(registerArray[operandPosition]) >> shiftValue;
     registerArray[resultsPosition] = "0x" + to_string(resultValue);
 
-    cout << operation << " " << result << ", " << operand << ", " << shift << endl;
+    cout << operation << " " << temp1 << " " << temp2 << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
 void LSLS(string operation, string result, string operand, string shift, string registerArray[8], int flagArray[4]){
+    string temp1 = result;
+    result.pop_back();
     //get register location of result
     string r = result.erase(0,1);
     //convert the register location to an integer
     int resultsPosition = stoi(r);
+
+    string temp2 = operand;
+    operand.pop_back();
     //get register location of operand1
-    string op = operand.erase(0,1);
+    string op1 = operand.erase(0,1);
     //convert the register location to an integer
-    int operandPosition = stoi(op);
+    int operandPosition = stoi(op1);
+
     //get shift value
     string s = shift.erase(0,1);
     int shiftValue = stoi(s); 
+ 
 
     //perform operation
     uint32_t resultValue = convertToBinary(registerArray[operandPosition]) << shiftValue;
     registerArray[resultsPosition] = "0x" + to_string(resultValue);
 
-    cout << operation << " " << result << ", " << operand << ", " << shift << endl;
+    cout << operation << " " << temp1 << " " << temp2 << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
         cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //update flag values and output flags
+    cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }

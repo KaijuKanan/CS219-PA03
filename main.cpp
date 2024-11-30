@@ -10,14 +10,14 @@
 using namespace std;
 
 uint32_t convertToBinary(string);
-void MOV(string, string, string, string[], int[]);
-void ADDS(string, string, string, string, string[], int[]);
-void SUBS(string, string, string, string, string[], int[]);
-void ANDS(string, string, string, string, string[], int[]);
-void ORR(string, string, string, string, string[], int[]);
-void XOR(string, string, string, string, string[], int[]);
-void LSRS(string, string, string, string, string[], int[]);
-void LSLS(string, string, string, string, string[], int[]);
+void MOV(string, string, string, string*, int*);
+void ADDS(string, string, string, string, string*, int*);
+void SUBS(string, string, string, string, string*, int*);
+void ANDS(string, string, string, string, string*, int*);
+void ORR(string, string, string, string, string*, int*);
+void XOR(string, string, string, string, string*, int*);
+void LSRS(string, string, string, string, string*, int*);
+void LSLS(string, string, string, string, string*, int*);
 
 int main(){
     string operation;
@@ -55,22 +55,22 @@ int main(){
         }
         if(operation == "SUBS" || operation == "subs"){
             input >> resultRegister >> operandRegister1 >> operandRegister2;
-            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            SUBS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
             cout << endl;
         }
         if(operation == "ANDS" || operation == "ands"){
             input >> resultRegister >> operandRegister1 >> operandRegister2;
-            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            ANDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
             cout << endl;
         }
-        if(operation == "ORRS" || operation == "ors"){
+        if(operation == "ORR" || operation == "orr"){
             input >> resultRegister >> operandRegister1 >> operandRegister2;
-            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            ORR(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
             cout << endl;
         }
-        if(operation == "XORS" || operation == "xors"){
+        if(operation == "XOR" || operation == "xor"){
             input >> resultRegister >> operandRegister1 >> operandRegister2;
-            ADDS(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
+            XOR(operation, resultRegister, operandRegister1, operandRegister2, registerArray, flagArray);
             cout << endl;
         }
         if(operation == "LSRS" || operation == "lsrs"){
@@ -97,15 +97,16 @@ int main(){
 
 
 uint32_t convertToBinary(string operand){
+    operand.erase(0, 2);
     stringstream ss;
     uint32_t binary;
-    ss << operand;
-    ss >> hex >> binary;
+    ss << hex << operand;
+    ss >> binary;
     return binary;
 }
 
 
-void MOV(string operation, string registerLocation, string hexValue, string registerArray[8], int flagArray[4]){
+void MOV(string operation, string registerLocation, string hexValue, string* registerArray, int* flagArray){
     //remove the comma from the register location
     string temp = registerLocation;
     registerLocation.pop_back();
@@ -113,52 +114,47 @@ void MOV(string operation, string registerLocation, string hexValue, string regi
     string rl = registerLocation.erase(0,1);
     //convert the register location to an integer
     int position = stoi(rl);
-    //inserting the hex value into the register array at the correct position, and making every other position 0x0
-    for(int i = 0; i < 8; i++){
-        if(i == position){
-            registerArray[i] = hexValue;
-        }
-        else{
-            registerArray[i] = "0x0";
-        }
-    }
+    
+    //update register array
+    registerArray[position] = hexValue.erase(0, 1);
+
     //output results
     cout << operation << " " << temp << " " << hexValue << endl;
     for(int i = 0; i < 8; i++){
-        cout << "R" << i << " " << registerArray[i] << " ";
+        cout << "R" << i << ": " << registerArray[i] << " ";
     }
     cout << endl;
     //output flags
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
-void ADDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void ADDS(string operation, string result, string operand1, string operand2, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand1;
     operand1.pop_back();
     //get register location of operand1
-    string op1 = operand1.erase(0,1);
+    operand1.erase(0,1);
     //convert the register location to an integer
-    int operand1Position = stoi(op1);
+    int operand1Position = stoi(operand1);
 
     string temp3 = operand2;
-    operand2.pop_back();
     //get register location of operand2
-    string op2 = operand2.erase(0,1);
+    operand2.erase(0,1);
     //convert the register location to an integer
-    int operand2Position = stoi(op2);
-
+    int operand2Position = stoi(operand2);
     //perform ADDS operation
     uint32_t resultValue = convertToBinary(registerArray[operand1Position]) + convertToBinary(registerArray[operand2Position]);
 
     //update register array
-    string resultHex = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
     registerArray[resultsPosition] = resultHex;
 
     //output results
@@ -171,35 +167,34 @@ void ADDS(string operation, string result, string operand1, string operand2, str
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
-void SUBS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void SUBS(string operation, string result, string operand1, string operand2, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand1;
     operand1.pop_back();
     //get register location of operand1
-    string op1 = operand1.erase(0,1);
+    operand1.erase(0,1);
     //convert the register location to an integer
-    int operand1Position = stoi(op1);
+    int operand1Position = stoi(operand1);
 
     string temp3 = operand2;
-    operand2.pop_back();
     //get register location of operand2
-    string op2 = operand2.erase(0,1);
+    operand2.erase(0,1);
     //convert the register location to an integer
-    int operand2Position = stoi(op2);
+    int operand2Position = stoi(operand2);
 
-    //takes the two's compliment of operand1
-    uint32_t operand1Value = ~convertToBinary(registerArray[operand1Position]) + 1;
     //perform operation
-    uint32_t resultValue = convertToBinary(registerArray[operand2Position]) + operand1Value;
+    uint32_t resultValue = convertToBinary(registerArray[operand1Position]) - convertToBinary(registerArray[operand2Position]);
 
     //update register array
-    string resultHex = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
     registerArray[resultsPosition] = resultHex;
 
     //output results
@@ -212,33 +207,34 @@ void SUBS(string operation, string result, string operand1, string operand2, str
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
-void ANDS(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void ANDS(string operation, string result, string operand1, string operand2, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand1;
     operand1.pop_back();
     //get register location of operand1
-    string op1 = operand1.erase(0,1);
+    operand1.erase(0,1);
     //convert the register location to an integer
-    int operand1Position = stoi(op1);
+    int operand1Position = stoi(operand1);
 
     string temp3 = operand2;
-    operand2.pop_back();
     //get register location of operand2
-    string op2 = operand2.erase(0,1);
+    operand2.erase(0,1);
     //convert the register location to an integer
-    int operand2Position = stoi(op2);
+    int operand2Position = stoi(operand2);
 
     //perform operation
     uint32_t resultValue = convertToBinary(registerArray[operand1Position]) & convertToBinary(registerArray[operand2Position]);
 
     //update register array
-    string resultHex = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
     registerArray[resultsPosition] = resultHex;
 
     //output results
@@ -251,33 +247,34 @@ void ANDS(string operation, string result, string operand1, string operand2, str
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;
 }
 
-void ORR(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void ORR(string operation, string result, string operand1, string operand2, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand1;
     operand1.pop_back();
     //get register location of operand1
-    string op1 = operand1.erase(0,1);
+    operand1.erase(0,1);
     //convert the register location to an integer
-    int operand1Position = stoi(op1);
+    int operand1Position = stoi(operand1);
 
     string temp3 = operand2;
-    operand2.pop_back();
     //get register location of operand2
-    string op2 = operand2.erase(0,1);
+    operand2.erase(0,1);
     //convert the register location to an integer
-    int operand2Position = stoi(op2);
+    int operand2Position = stoi(operand2);
 
     //perform operation
     uint32_t resultValue = convertToBinary(registerArray[operand1Position]) | convertToBinary(registerArray[operand2Position]);
 
     //update register array
-    string resultHex = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
     registerArray[resultsPosition] = resultHex;
 
     //output results
@@ -290,33 +287,34 @@ void ORR(string operation, string result, string operand1, string operand2, stri
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;   
 }
 
-void XOR(string operation, string result, string operand1, string operand2, string registerArray[8], int flagArray[4]){
+void XOR(string operation, string result, string operand1, string operand2, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand1;
     operand1.pop_back();
     //get register location of operand1
-    string op1 = operand1.erase(0,1);
+    operand1.erase(0,1);
     //convert the register location to an integer
-    int operand1Position = stoi(op1);
+    int operand1Position = stoi(operand1);
 
     string temp3 = operand2;
-    operand2.pop_back();
     //get register location of operand2
-    string op2 = operand2.erase(0,1);
+    operand2.erase(0,1);
     //convert the register location to an integer
-    int operand2Position = stoi(op2);
+    int operand2Position = stoi(operand2);
 
     //perform operation
     uint32_t resultValue = convertToBinary(registerArray[operand1Position]) ^ convertToBinary(registerArray[operand2Position]);
 
     //update register array
-    string resultHex = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
     registerArray[resultsPosition] = resultHex;
 
     //output results
@@ -329,28 +327,31 @@ void XOR(string operation, string result, string operand1, string operand2, stri
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
-void LSRS(string operation, string result, string operand, string shift, string registerArray[8], int flagArray[4]){
+void LSRS(string operation, string result, string operand, string shift, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand;
     operand.pop_back();
     //get register location of operand1
-    string op1 = operand.erase(0,1);
+    operand.erase(0,1);
     //convert the register location to an integer
-    int operandPosition = stoi(op1);
+    int operandPosition = stoi(operand);
 
     //get shift value
     string s = shift.erase(0,1);
     int shiftValue = stoi(s); 
 
     //perform operation
-    uint32_t resultValue = convertToBinary(registerArray[operandPosition]) >> shiftValue;
-    registerArray[resultsPosition] = "0x" + to_string(resultValue);
+    uint32_t resultValue = convertToBinary(registerArray[operandPosition]) >> shiftValue;    
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
+    registerArray[resultsPosition] = resultHex;
 
     cout << operation << " " << temp1 << " " << temp2 << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
@@ -361,20 +362,20 @@ void LSRS(string operation, string result, string operand, string shift, string 
     cout << "N: " << flagArray[0] << " Z: " << flagArray[1] << " C: " << flagArray[2] << " V: " << flagArray[3] << endl;  
 }
 
-void LSLS(string operation, string result, string operand, string shift, string registerArray[8], int flagArray[4]){
+void LSLS(string operation, string result, string operand, string shift, string* registerArray, int* flagArray){
     string temp1 = result;
     result.pop_back();
     //get register location of result
-    string r = result.erase(0,1);
+    result.erase(0,1);
     //convert the register location to an integer
-    int resultsPosition = stoi(r);
+    int resultsPosition = stoi(result);
 
     string temp2 = operand;
     operand.pop_back();
     //get register location of operand1
-    string op1 = operand.erase(0,1);
+    operand.erase(0,1);
     //convert the register location to an integer
-    int operandPosition = stoi(op1);
+    int operandPosition = stoi(operand);
 
     //get shift value
     string s = shift.erase(0,1);
@@ -383,7 +384,10 @@ void LSLS(string operation, string result, string operand, string shift, string 
 
     //perform operation
     uint32_t resultValue = convertToBinary(registerArray[operandPosition]) << shiftValue;
-    registerArray[resultsPosition] = "0x" + to_string(resultValue);
+    stringstream ss;
+    ss << hex << uppercase << resultValue;
+    string resultHex = "0x" + ss.str();
+    registerArray[resultsPosition] = resultHex;
 
     cout << operation << " " << temp1 << " " << temp2 << ", " << shift << endl;
     for(int i = 0; i < 8; i++){
